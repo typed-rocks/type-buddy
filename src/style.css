@@ -1,0 +1,25 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100%;
+}
+
+.editor {
+  flex: 1;
+  margin: 10px;
+
+  overflow: auto;
+
+}
+
+
+@media (max-width: 1200px) {
+  .container {
+    flex-direction: column;
+  }
+}
