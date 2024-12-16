@@ -1,4 +1,4 @@
-[Alt](./imgs/typebuddy-icon.png)
+[Alt](https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/typebuddy-icon.png?raw=true)
 # Type Buddy
 
 Helps you read and write types like normal JavaScript functions.
