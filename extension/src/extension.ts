@@ -183,6 +183,10 @@ function getWebviewContent(content: string): string {
 			overflow-x: auto;
 			width: 100%;
 			}
+
+      pre {
+      font-size: 1.2rem;
+      }
 	
 		</style>
   </head>

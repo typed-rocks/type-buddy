@@ -84,7 +84,6 @@ function unwrapParenthesizedType(node: Node | undefined): Node {
     throw new Error("Node is undefined");
   }
   if (node?.isKind(SyntaxKind.ParenthesizedType)) {
-    console.log('unwrapping', node.getText());
     return unwrapParenthesizedType(node.getFirstChildByKind(SyntaxKind.ConditionalType));
   }
   return node;
@@ -244,7 +243,6 @@ function transformFnToTernary(func: FunctionDeclaration) {
   const ternaryExpr = transformIfStatementToTernary(ifStatement, 2);
 
   const fnName = func.getName();
-  console.log(fnName);
   const fnParameters = func
     .getParameters()
     .map((p) => p.getText().trim())
@@ -265,7 +263,7 @@ function getBlockReturnExpression(block: Statement, indent: number): string {
         const returnExpr = singleStmt.getExpression();
         if (!returnExpr) {
           throw new Error(
-            "there needs to be a EXACTLY ONE return inside of if, else if or else blocks. NOTHING else.\nLine: " +
+            "There needs to be a EXACTLY ONE return inside of if, else if or else blocks. NOTHING else.\nLine: " +
               singleStmt.getStartLineNumber()
           );
         }
@@ -276,7 +274,7 @@ function getBlockReturnExpression(block: Statement, indent: number): string {
       }
     }
     // If there's more complexity here, you'd need more logic.
-    throw new Error("Expected a single return or a nested if in the block. \nLine: " + block.getStartLineNumber());
+    throw new Error("Expected a single return or a nested if in the block. \nLine: " + block.getEndLineNumber());
   } else if (block.isKind(SyntaxKind.ReturnStatement)) {
     // Direct return, no block
     const returnExpr = block.getExpression();
@@ -288,7 +286,7 @@ function getBlockReturnExpression(block: Statement, indent: number): string {
 
   throw new Error(
     "This block structure is not supported. Only if, else if or else blocks with exactly one return in there are supported\n Line: " +
-      block.getStartLineNumber()
+      block.getEndLineNumber()
   );
 }
 

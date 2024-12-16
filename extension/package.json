@@ -6,6 +6,7 @@
   "engines": {
     "vscode": "^1.85.0"
   },
+  "icon": "imgs/typebuddy-icon.png",
   "categories": [
     "Debuggers"
   ],
@@ -15,7 +16,7 @@
   "main": "./dist/extension.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/typed-rocks/type-buddy"
+    "url": "https://github.com/typed-rocks/type-buddy/extension"
   },
   "contributes": {
     "languages": [

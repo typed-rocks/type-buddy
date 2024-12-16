@@ -1,72 +1,27 @@
-[Alt](https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/typebuddy-icon.png?raw=true)
-# Type Buddy
+<div align="center">
+<img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/typebuddy-icon.png?raw=true" alt="Icon" width="150">
+</div>
+<h1 align="center" style="font-weight: bold; font-size: 40px;">Type Buddy 🤝</h1>
 
-Helps you read and write types like normal JavaScript functions.
+<p align="center" style="font-size: 30px">Finally make <i>sense</i> of your complex types</p>
+<p align="center" style="font-size: 30px"><a href="">💻 VSCode Extension</a> | <a href="">🌐 Web App</a></p>
+<div align="center">
+<p style="font-size:25px">Just <b><i>hover over</i></b> your complex type and reveal the ✨beautiful function✨...</p>
+<img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/hover.png?raw=true" alt="Type Buddy Hover" height="300">
+<br /><br />
+<p style="font-size:25px">... or use the command palette using <b><i>Show Type Functions</i></b> which shows the function representation as you type</p>
+<ol align="left">
+<li>Open any TypeScript file</li>
+<li>Use the Command Palette command <code>Type Buddy: Open Type Viewer</code></li>
+<li>Update your code and the viewer will show you the results as functions.</li>
+</ol>
+<img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/show-functions.png?raw=true" alt="Type Buddy: Show Functions" height="300">
 
-## Features
-
-### Preview
-Just hover over a type and it will show you the type as a function:
-
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+<p style="font-size:25px">... or create a ".tb" file and start writing <i>Types</i> as <i>Functions</i> and let the <b><i>Open Type Viewer</i></b> create the types for you.</p>
+<ol align="left">
+<li>Either use the command <code>Type Buddy: Create Type Buddy Document</code> to create a new <code>.tb</code></tb> file or use an existing one and run the <code>Type Buddy: Open Type Viewer</code> command to start the viewer.</li>
+<li>Use the Command Palette command <code>Type Buddy: Open Type Viewer</code></li>
+<li>Update your code and the viewer will show you the results as functions.</li>
+</ol>
+<img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/type-preview.png?raw=true" alt="Type Preview" height="300">
+</div>

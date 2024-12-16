@@ -84,7 +84,6 @@ function unwrapParenthesizedType(node: Node | undefined): Node {
     throw new Error("Node is undefined");
   }
   if (node?.isKind(SyntaxKind.ParenthesizedType)) {
-    console.log('unwrapping', node.getText());
     return unwrapParenthesizedType(node.getFirstChildByKind(SyntaxKind.ConditionalType));
   }
   return node;
@@ -244,7 +243,6 @@ function transformFnToTernary(func: FunctionDeclaration) {
   const ternaryExpr = transformIfStatementToTernary(ifStatement, 2);
 
   const fnName = func.getName();
-  console.log(fnName);
   const fnParameters = func
     .getParameters()
     .map((p) => p.getText().trim())
