@@ -16,7 +16,7 @@ Open any TypeScript file, Use the 🎨 command <code>Type Buddy: Show Type Funct
 
 <p style="font-size:2rem">👀 <b>Type Viewer</b></p>
 <p style="font-size: 1.25rem">
-Either use the command <code>Type Buddy: Create Type Buddy Document</code> to create a new <code>.tb</code> file or use an existing one and run the <code>Type Buddy: Open Type Viewer</code> command to start the viewer. Then update your code and the viewer will show you the types as functions.</p>
+Either use the command <code>Type Buddy: Open Type Buddy File</code> to create a new <code>.tb</code> file or use an existing one and run the <code>Type Buddy: Open Type Viewer</code> command to start the viewer. Then update your code and the viewer will show you the types as functions.</p>
 
 <img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/type-preview.png?raw=true" alt="Type Preview" height="400">
 </div>

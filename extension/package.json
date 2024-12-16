@@ -1,7 +1,7 @@
 {
   "name": "type-buddy",
-  "displayName": "type-buddy",
-  "description": "",
+  "displayName": "Type Buddy",
+  "description": "A simple extension to help you understand TypeScript types",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.85.0"
@@ -45,11 +45,11 @@
       },
       {
         "command": "type-buddy.openEditor",
-        "title": "Type Buddy: Create Type Buddy Doc"
+        "title": "Type Buddy: Open Type Buddy File"
       },
       {
         "command": "type-buddy.showFunctionTypes",
-        "title": "Type Buddy: Show Function Types"
+        "title": "Type Buddy: Show Type Functions"
       }
     ]
   },

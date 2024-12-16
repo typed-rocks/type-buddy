@@ -107,6 +107,10 @@ export function activate(context: vscode.ExtensionContext) {
   const changeTextDocumentDisposable = vscode.workspace.onDidChangeTextDocument((event) => updateViews(event));
 	context.subscriptions.push(changeTextDocumentDisposable);
 
+  function extractFileName(fileName?: string) {
+    const parts = fileName?.split("/");
+    return parts ? parts[parts.length - 1] : "Untitled";
+  }
 
   function updateViews(event: vscode.TextDocumentChangeEvent | vscode.TextEditor | undefined) {
     if (!event?.document) {
@@ -141,7 +145,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 
   function updateTypeText(title: string, newText: string) {
-    post(`Type Preview for: ${title}`, typeWebViewPanel().webview, () => fnsToTernaries(newText).join("\n\n"));
+    const fileName = extractFileName(title);
+    post(`Type Preview for: ${fileName}`, typeWebViewPanel().webview, () => fnsToTernaries(newText).join("\n\n"));
   }
 
   function post(title: string, webview: vscode.Webview, fn: () => string) {

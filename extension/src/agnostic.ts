@@ -264,7 +264,7 @@ function getBlockReturnExpression(block: Statement, indent: number): string {
         if (!returnExpr) {
           throw new Error(
             "There needs to be a EXACTLY ONE return inside of if, else if or else blocks. NOTHING else.\nLine: " +
-              singleStmt.getStartLineNumber()
+            singleStmt.getStartLineNumber()
           );
         }
         return returnExpr.getText();
@@ -286,7 +286,7 @@ function getBlockReturnExpression(block: Statement, indent: number): string {
 
   throw new Error(
     "This block structure is not supported. Only if, else if or else blocks with exactly one return in there are supported\n Line: " +
-      block.getEndLineNumber()
+    block.getEndLineNumber()
   );
 }
 
