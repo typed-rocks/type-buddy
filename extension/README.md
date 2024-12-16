@@ -7,21 +7,16 @@
 <p align="center" style="font-size: 30px"><a href="">💻 VSCode Extension</a> | <a href="">🌐 Web App</a></p>
 <div align="center">
 <p style="font-size:25px">Just <b><i>hover over</i></b> your complex type and reveal the ✨beautiful function✨...</p>
-<img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/hover.png?raw=true" alt="Type Buddy Hover" height="300">
+<img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/hover.png?raw=true" alt="Type Buddy Hover" height="400">
 <br /><br />
-<p style="font-size:25px">... or use the command palette using <b><i>Show Type Functions</i></b> which shows the function representation as you type</p>
-<ol align="left">
-<li>Open any TypeScript file</li>
-<li>Use the Command Palette command <code>Type Buddy: Open Type Viewer</code></li>
-<li>Update your code and the viewer will show you the results as functions.</li>
-</ol>
-<img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/show-functions.png?raw=true" alt="Type Buddy: Show Functions" height="300">
+<p style="font-size:2rem">🕵️‍♂️ <b>Show Type Functions</b></p>
+<p style="font-size: 1.25rem">
+Open any TypeScript file, Use the 🎨 command <code>Type Buddy: Show Type Functions</code>, Update your code and the viewer will show you the results as functions.</p>
+<img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/show-functions.png?raw=true" alt="Type Buddy: Show Functions" height="400px" />
 
-<p style="font-size:25px">... or create a ".tb" file and start writing <i>Types</i> as <i>Functions</i> and let the <b><i>Open Type Viewer</i></b> create the types for you.</p>
-<ol align="left">
-<li>Either use the command <code>Type Buddy: Create Type Buddy Document</code> to create a new <code>.tb</code></tb> file or use an existing one and run the <code>Type Buddy: Open Type Viewer</code> command to start the viewer.</li>
-<li>Use the Command Palette command <code>Type Buddy: Open Type Viewer</code></li>
-<li>Update your code and the viewer will show you the results as functions.</li>
-</ol>
-<img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/type-preview.png?raw=true" alt="Type Preview" height="300">
+<p style="font-size:2rem">👀 <b>Type Viewer</b></p>
+<p style="font-size: 1.25rem">
+Either use the command <code>Type Buddy: Create Type Buddy Document</code> to create a new <code>.tb</code> file or use an existing one and run the <code>Type Buddy: Open Type Viewer</code> command to start the viewer. Then update your code and the viewer will show you the types as functions.</p>
+
+<img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/type-preview.png?raw=true" alt="Type Preview" height="400">
 </div>
