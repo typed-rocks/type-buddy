@@ -4,7 +4,10 @@
 <h1 align="center" style="font-weight: bold; font-size: 40px;">Type Buddy 🤝</h1>
 
 <p align="center" style="font-size: 30px">Finally make <i>sense</i> of your complex types</p>
-<p align="center" style="font-size: 30px"><a href="">💻 VSCode Extension</a> | <a href="">🌐 Web App</a></p>
+<p align="center" style="font-size: 30px"><a href="">💻 VSCode Extension</a> | <a href="https://typed-rocks.github.
+io/type-buddy">🌐 
+Web 
+App</a></p>
 <div align="center">
 <p style="font-size:25px">Just <b><i>hover over</i></b> your complex type and reveal the ✨beautiful function✨...</p>
 <img src="https://github.com/typed-rocks/type-buddy/blob/main/extension/imgs/hover.png?raw=true" alt="Type Buddy Hover" height="400">
