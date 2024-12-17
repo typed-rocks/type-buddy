@@ -3,10 +3,11 @@
   "displayName": "Type Buddy",
   "description": "A simple extension to help you understand TypeScript types",
   "version": "0.0.1",
+  "publisher": "chwoerz",
   "engines": {
     "vscode": "^1.85.0"
   },
-  "icon": "imgs/typebuddy-icon.png",
+  "icon": "imgs/icon.png",
   "categories": [
     "Debuggers"
   ],

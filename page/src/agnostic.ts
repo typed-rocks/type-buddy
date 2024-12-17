@@ -1,4 +1,13 @@
-import { Node, Project, ScriptTarget, ts, FunctionDeclaration, IfStatement, Statement } from "ts-morph";
+import {
+  Block,
+  FunctionDeclaration,
+  IfStatement,
+  Node,
+  Project,
+  ScriptTarget,
+  Statement,
+  ts
+} from "ts-morph";
 import ModuleResolutionKind = ts.ModuleResolutionKind;
 import SyntaxKind = ts.SyntaxKind;
 
@@ -79,8 +88,9 @@ export function getAllTypeConditionalDeclarations(input: string): string[] {
 
   return allTypeAliases.map((alias) => alias.getText());
 }
+
 function unwrapParenthesizedType(node: Node | undefined): Node {
-  if(node === undefined) {
+  if (node === undefined) {
     throw new Error("Node is undefined");
   }
   if (node?.isKind(SyntaxKind.ParenthesizedType)) {
@@ -88,6 +98,7 @@ function unwrapParenthesizedType(node: Node | undefined): Node {
   }
   return node;
 }
+
 function traverseTernary(node: Node | undefined, store: string[]) {
   node = unwrapParenthesizedType(node);
   if (node.isKind(SyntaxKind.ConditionalType)) {
@@ -180,20 +191,20 @@ function replaceIfBlockValuesWithString(code: string) {
       const fnName = line.substring(fnIndexStart, fnIndexEnd).trim();
       const fixedLine = `function ${fnName}(${fixeds.map((f) => f.fixedLine).join(", ")}) {`;
       workingLines.push(fixedLine);
-      replacements.push(...fixeds.map((f) => ({ index: f.fixedLine, backReplace: f.condition })));
+      replacements.push(...fixeds.map((f) => ({index: f.fixedLine, backReplace: f.condition})));
     } else if (matched?.length) {
       const fixedLine = replaceConditionWithFixed(line, matched[0], replaceValue);
       workingLines.push(fixedLine.fixedLine);
-      replacements.push({ index: replaceValue, backReplace: fixedLine.condition });
+      replacements.push({index: replaceValue, backReplace: fixedLine.condition});
     } else if (line.match(/^\s*return/)) {
       const fixedLine = replaceReturnWithFixed(line, replaceValue);
       workingLines.push(fixedLine.fixedLine);
-      replacements.push({ index: replaceValue, backReplace: fixedLine.condition });
+      replacements.push({index: replaceValue, backReplace: fixedLine.condition});
     } else {
       workingLines.push(line);
     }
   }
-  return { workingLines, replacements };
+  return {workingLines, replacements};
 }
 
 function replaceArgumentsWithFixed(args: string): {
@@ -202,7 +213,7 @@ function replaceArgumentsWithFixed(args: string): {
 }[] {
   const splitArgs = args.split(",");
   return splitArgs.map((arg, i) => {
-    return { condition: arg, fixedLine: `replace${i}` };
+    return {condition: arg, fixedLine: `replace${i}`};
   });
 }
 
@@ -217,7 +228,7 @@ function replaceReturnWithFixed(
   const conditionStartIndex = line.indexOf(returnStr);
   const endIndex = line.endsWith(";") ? line.length - 1 : line.length;
   const condition = line.substring(conditionStartIndex + returnStr.length, endIndex);
-  return { condition, fixedLine: line.replace(condition, fixed) };
+  return {condition, fixedLine: line.replace(condition, fixed)};
 }
 
 function replaceConditionWithFixed(
@@ -231,7 +242,7 @@ function replaceConditionWithFixed(
   const conditionStartIndex = line.indexOf(prefix);
   const conditionEndIndex = line.lastIndexOf(")");
   const condition = line.substring(conditionStartIndex + prefix.length, conditionEndIndex);
-  return { condition, fixedLine: line.replace(condition, fixed) };
+  return {condition, fixedLine: line.replace(condition, fixed)};
 }
 
 function transformFnToTernary(func: FunctionDeclaration) {
@@ -250,44 +261,65 @@ function transformFnToTernary(func: FunctionDeclaration) {
   return `type ${fnName}<${fnParameters}> =\n  ${ternaryExpr};`;
 }
 
+function handleBlock(block: Block, indent: number) {
+  const innerStmts = block.getStatements();
+  const message = "There needs to be a EXACTLY ONE return inside of if, else if or else blocks. NOTHING else.\nLine: " +
+    block.getStartLineNumber();
+  if (innerStmts.length !== 1) {
+    throw new Error(message);
+  }
+  const onlyStatement = innerStmts[0];
+  if (onlyStatement.isKind(SyntaxKind.ReturnStatement)) {
+    const returnExpr = onlyStatement.getExpression();
+    if (returnExpr) {
+      return returnExpr.getText();
+    }
+    throw new Error(message);
+  } else if (onlyStatement.isKind(SyntaxKind.IfStatement)) {
+    // Nested if
+    return transformIfStatementToTernary(onlyStatement, indent + 1);
+  } else {
+    // If there's more complexity here, you'd need more logic.
+    throw new Error("Expected a single return or a nested if in the block. \nLine: " + block.getEndLineNumber());
+  }
+}
+
 /**
  * Extracts a return expression from a block that must contain a single return statement.
  * If the block contains nested ifs, we will process them recursively.
  */
 function getBlockReturnExpression(block: Statement, indent: number): string {
   if (block.isKind(SyntaxKind.Block)) {
-    const innerStmts = block.getStatements();
-    if (innerStmts.length === 1) {
-      const singleStmt = innerStmts[0];
-      if (singleStmt.isKind(SyntaxKind.ReturnStatement)) {
-        const returnExpr = singleStmt.getExpression();
-        if (!returnExpr) {
-          throw new Error(
-            "There needs to be a EXACTLY ONE return inside of if, else if or else blocks. NOTHING else.\nLine: " +
-            singleStmt.getStartLineNumber()
-          );
-        }
-        return returnExpr.getText();
-      } else if (singleStmt.isKind(SyntaxKind.IfStatement)) {
-        // Nested if
-        return transformIfStatementToTernary(singleStmt, indent + 1);
-      }
-    }
-    // If there's more complexity here, you'd need more logic.
-    throw new Error("Expected a single return or a nested if in the block. \nLine: " + block.getEndLineNumber());
+    return handleBlock(block, indent);
   } else if (block.isKind(SyntaxKind.ReturnStatement)) {
     // Direct return, no block
-    const returnExpr = block.getExpression();
-    return returnExpr ? returnExpr.getText() : "undefined";
+    const returnExpr = block.getExpression()?.getText();
+    return returnExpr?.length ? returnExpr : "never";
   } else if (block.isKind(SyntaxKind.IfStatement)) {
     // Direct nested if without a block
     return transformIfStatementToTernary(block, indent + 1);
+  } else if (block.getChildren().length) {
+    throw new Error(
+      "There needs to be a EXACTLY ONE return inside of if, else if or else blocks. NOTHING else.\nLine: " +
+      block.getStartLineNumber()
+    );
   }
+  return 'never';
+}
 
-  throw new Error(
-    "This block structure is not supported. Only if, else if or else blocks with exactly one return in there are supported\n Line: " +
-    block.getEndLineNumber()
-  );
+function noElseBlock(ifStmt: IfStatement, indentation: string, thenExpr: string) {
+  const conditionText = ifStmt.getExpression().getText();
+  const noSibling = !ifStmt.getNextSiblings().length;
+  const oneNextSibling = ifStmt.getNextSiblings().length === 1;
+  const isSiblingReturn = ifStmt.getNextSibling()?.isKind(SyntaxKind.ReturnStatement);
+  if (oneNextSibling && isSiblingReturn) {
+    const returnExpr = ifStmt.getNextSibling()!.asKindOrThrow(SyntaxKind.ReturnStatement).getExpression();
+    return `${conditionText}\n${indentation}? ${thenExpr}\n${indentation}: ${returnExpr?.getText()}`;
+  } else if (noSibling) {
+    return `${conditionText}\n${indentation}? ${thenExpr}\n${indentation}: never`;
+  } else {
+    throw new Error("There needs to be a EXACTLY ONE return inside of \n//if, else if or else blocks. NOTHING else.\n//Line: " + ifStmt.getEndLineNumber());
+  }
 }
 
 /**
@@ -300,11 +332,9 @@ function transformIfStatementToTernary(ifStmt: IfStatement, indent: number): str
   const elseBranch = ifStmt.getElseStatement();
   const thenExpr = getBlockReturnExpression(thenBranch, indent);
 
-  // If there is no else, we might handle differently, but here we assume full if-else chains.
+
   if (!elseBranch) {
-    // If no else branch, it's just condition ? thenExpr : undefined (or some fallback)
-    // But usually you have a full chain. If needed, handle no-else case here.
-    throw new Error("No else branch found. This is not supported. Line: " + ifStmt.getStartLineNumber());
+    return noElseBlock(ifStmt, indentation, thenExpr);
   }
   let elseExpr: string;
   if (elseBranch.isKind(SyntaxKind.IfStatement)) {
