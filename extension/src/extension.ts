@@ -4,14 +4,21 @@ import * as vscode from "vscode";
 import { fnsToTernaries, getAllTypeConditionalDeclarations, ternaryToFn } from "./agnostic";
 import { Project } from "ts-morph";
 
+import hljs from 'highlight.js';
+import path from "path";
+import { writeFileSync } from "fs";
+
+
+
 const customType = "typeBuddyCustomTs";
 
-function createWebview(content: string, title: string, col: number): vscode.WebviewPanel {
+function createWebview(title: string, col: number): vscode.WebviewPanel {
   const panel = vscode.window.createWebviewPanel("typeBuddy", "Type Buddy: " + title, col, {
     enableScripts: true,
   });
-
-  panel.webview.html = getWebviewContent(content);
+  const fontSize = vscode.workspace.getConfiguration('editor').get<number>('fontSize');
+  const strFontSize = fontSize ? fontSize + 'px' : '1.3rem';
+  panel.webview.html = getWebviewContent(strFontSize);
   return panel;
 }
 
@@ -25,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
     if (fnWebview) {
       return fnWebview;
     }
-    fnWebview = createWebview("", "Function Preview", vscode.ViewColumn.Beside);
+    fnWebview = createWebview("Function Preview", vscode.ViewColumn.Beside);
     fnWebview.onDidDispose(() => (fnWebview = undefined));
     return fnWebview;
   }
@@ -34,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
     if (typeWebview) {
       return typeWebview;
     }
-    typeWebview = createWebview('', "Type Preview", vscode.ViewColumn.Beside);
+    typeWebview = createWebview("Type Preview", vscode.ViewColumn.Beside);
     typeWebview.onDidDispose(() => (typeWebview = undefined));
     return typeWebview;
   }
@@ -105,8 +112,19 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(editorChangeDisposable);
 
   const changeTextDocumentDisposable = vscode.workspace.onDidChangeTextDocument((event) => updateViews(event));
+  const saveTextDocumentDisposable = vscode.workspace.onDidSaveTextDocument((event) => {
+    const fileName = event.fileName;
+    if(fileName.endsWith(".tb")) {
+      const dir = path.dirname(fileName);
+      const basename = path.basename(fileName);
+      const dtsFileName = path.resolve(dir, basename + '.d.ts');
+      const newText = fnsToTernaries(event.getText()).join("\n\n");
+      writeFileSync(dtsFileName, newText);
+    }
+  });
+  
 	context.subscriptions.push(changeTextDocumentDisposable);
-
+  context.subscriptions.push(saveTextDocumentDisposable);
   function extractFileName(fileName?: string) {
     const parts = fileName?.split("/");
     return parts ? parts[parts.length - 1] : "Untitled";
@@ -146,13 +164,19 @@ export function activate(context: vscode.ExtensionContext) {
 
   function updateTypeText(title: string, newText: string) {
     const fileName = extractFileName(title);
+    
     post(`Type Preview for: ${fileName}`, typeWebViewPanel().webview, () => fnsToTernaries(newText).join("\n\n"));
   }
 
+  
   function post(title: string, webview: vscode.Webview, fn: () => string) {
     try {
       const result = fn();
-      webview.postMessage({ title, text: escapeHTML(result) });
+      
+      const code = `<pre><code class="hljs language-typescript">` +
+                        hljs.highlight(result, { language: 'typescript', ignoreIllegals: true }).value +
+                        '</code></pre>';
+      webview.postMessage({ title, text: code });
     } catch (e) {
       webview.postMessage({ title, text: (e as Error).message });
     }
@@ -169,28 +193,23 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {}
 
-function escapeHTML(str: string) {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
 
-function getWebviewContent(content: string): string {
+function getWebviewContent(fontsize: string): string {
   return `<!DOCTYPE html>
   <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <title>Markdown Info</title>
 		<style>
+
+      ${css};
 			.scroll-container {
 			overflow-x: auto;
 			width: 100%;
 			}
 
       pre {
-      font-size: 1.2rem;
+      font-size: ${fontsize};
       }
 	
 		</style>
@@ -198,16 +217,125 @@ function getWebviewContent(content: string): string {
   <body>
     <h2 id="title"></h2>
 		<div class="scroll-container">
-    <pre id="content">${content}</pre>
+     <div id="code"></div>
 		</div>
     <script>
       const vscode = acquireVsCodeApi();
       window.addEventListener('message', event => {
         const message = event.data; 
 				document.getElementById('title').textContent = message.title;
-        document.getElementById('content').innerHTML = message.text;
+        document.getElementById('code').innerHTML = message.text;
       });
     </script>
   </body>
   </html>`;
 }
+
+const css = `.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+
+  color: #c9d1d9;
+  background: #0d1117;
+}
+
+.hljs-comment,
+.hljs-punctuation {
+  color: #8b949e;
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-meta,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: #79c0ff;
+}
+
+.hljs-variable,
+.hljs-literal,
+.hljs-number,
+.hljs-doctag {
+  color: #ffa657;
+}
+
+.hljs-params {
+  color: #c9d1d9;
+}
+
+.hljs-function {
+  color: #d2a8ff;
+}
+
+.hljs-class,
+.hljs-tag,
+.hljs-title,
+.hljs-built_in {
+  color: #7ee787;
+}
+
+.hljs-keyword,
+.hljs-type,
+.hljs-builtin-name,
+.hljs-meta-keyword,
+.hljs-template-tag,
+.hljs-template-variable {
+  color: #ff7b72;
+}
+
+.hljs-string,
+.hljs-undefined {
+  color: #a5d6ff;
+}
+
+.hljs-regexp {
+  color: #a5d6ff;
+}
+
+.hljs-symbol {
+  color: #79c0ff;
+}
+
+.hljs-bullet {
+  color: #ffa657;
+}
+
+.hljs-section {
+  color: #79c0ff;
+  font-weight: bold;
+}
+
+.hljs-quote,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+  color: #7ee787;
+}
+
+.hljs-emphasis {
+  color: #ffa657;
+  font-style: italic;
+}
+
+.hljs-strong {
+  color: #ffa657;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  color: #ffa198;
+  background-color: #490202;
+}
+
+.hljs-addition {
+  color: #7ee787;
+  background-color: #04260f;
+}
+
+.hljs-link {
+  color: #a5d6ff;
+  font-style: underline;
+}
+`;

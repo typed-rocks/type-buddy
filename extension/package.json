@@ -2,7 +2,7 @@
   "name": "type-buddy",
   "displayName": "Type Buddy",
   "description": "A simple extension to help you understand TypeScript types",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "publisher": "chwoerz",
   "engines": {
     "vscode": "^1.85.0"
@@ -82,6 +82,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "highlight.js": "^11.11.0",
     "ts-morph": "^24.0.0"
   }
 }
