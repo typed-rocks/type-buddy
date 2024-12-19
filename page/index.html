@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Type Buddy 🤝</title>
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="stylesheet" href="/src/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Type Buddy 🤝</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/src/style.css">
 </head>
 <body>
-<script type="module" src="/src/main.ts"></script>
 
-<h1>Type Buddy</h1>
-<div class="container">
-  <div class="editor" id="left">
-    <!-- Integrate your TypeScript editor here -->
-    <h2>Type-Input</h2>
-  </div>
-  <div class="editor" id="right">
-    <!-- Integrate your output editor here -->
-    <h2>Types as Functions</h2>
-  </div>
+<div class="editor-container">
+    <div class="editor-block">
+        <h2>Type Editor</h2>
+        <p>Write your normal types in here</p>
+        <div id="left" class="editor"></div>
+    </div>
+    <div class="editor-block">
+        <h2>Type Function Editor</h2>
+        <p>Write your types as functions</p>
+        <div id="right" class="editor"></div>
+    </div>
 </div>
+<script type="module" src="/src/main.ts"></script>
 </body>
 </html>

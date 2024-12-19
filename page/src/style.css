@@ -1,30 +1,52 @@
-body, html {
-  height: 100%;
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: rgb(28, 28, 28);
-  color: white;
+html, body {
+    margin: 0;
+    padding: 0;
+    background: rgb(49, 49, 49);
+    color: white;
+    font-family: Arial, sans-serif;
 }
 
-h1, h2 {
-  text-align: center;
+.editor-container {
+    display: flex;
+    flex-direction: row;
+    gap: 2vw;
+    height: calc(100vh - 56px); /* Adjust based on your header height */
+    width: 94vw;
+    margin: 0 auto;
+    padding-left: 2vw;
+
+    box-sizing: border-box;
 }
 
-.container {
-  display: flex;
-  height: 100%;
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
 }
 
-.editor {
-  flex: 1;
-  margin: 10px;
-  overflow: auto;
-
+h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin: 0;
+    padding: 10px;
 }
-
-
-@media (max-width: 1200px) {
-  .container {
+.editor-block {
+    display: flex;
     flex-direction: column;
-  }
+    flex: 1;
+    overflow: hidden;
+}
+p {
+    text-align: center;
+    font-size: 1.5rem;
+}
+.editor {
+    flex: 1;
+    position: relative;
+}
+
+/* Responsive: Stack editors vertically on narrow screens */
+@media (max-width: 1200px) {
+    .editor-container {
+        flex-direction: column;
+    }
 }
