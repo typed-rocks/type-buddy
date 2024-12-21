@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.6]
+
+- space after if
+
 ## [0.0.4 - 0.0.5] 
 
 - Minor convenience changes

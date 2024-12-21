@@ -106,7 +106,7 @@ function traverseTernary(node: Node | undefined, store: string[]) {
     const checkType = node.getCheckType();
     const ifType = unwrapParenthesizedType(node.getTrueType());
     const elseType = unwrapParenthesizedType(node.getFalseType());
-    const ifValue = `if(${checkType.getText()} extends ${extend.getText()}) {\n`;
+    const ifValue = `if (${checkType.getText()} extends ${extend.getText()}) {\n`;
     store.push(ifValue);
     traverseTernary(ifType, store);
     const elseIsConditional = elseType.isKind(SyntaxKind.ConditionalType);
