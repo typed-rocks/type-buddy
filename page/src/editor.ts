@@ -46,7 +46,7 @@ right.onDidChangeModelContent(() => {
     isUpdating = true;
     try {
     const value = right.getModel()?.getValue() ?? '';
-    const ternaries = fnsToTernaries(value).join('\n\n');
+    const ternaries = fnsToTernaries(value);
     left.setValue(ternaries);
     } catch(e: any) {
       left.setValue('//' + e.message);

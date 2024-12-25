@@ -118,7 +118,7 @@ export function activate(context: vscode.ExtensionContext) {
       const dir = path.dirname(fileName);
       const basename = path.basename(fileName);
       const dtsFileName = path.resolve(dir, basename + '.d.ts');
-      const newText = fnsToTernaries(event.getText()).join("\n\n");
+      const newText = fnsToTernaries(event.getText());
       writeFileSync(dtsFileName, newText);
     }
   });
@@ -165,7 +165,7 @@ export function activate(context: vscode.ExtensionContext) {
   function updateTypeText(title: string, newText: string) {
     const fileName = extractFileName(title);
     
-    post(`Type Preview for: ${fileName}`, typeWebViewPanel().webview, () => fnsToTernaries(newText).join("\n\n"));
+    post(`Type Preview for: ${fileName}`, typeWebViewPanel().webview, () => fnsToTernaries(newText));
   }
 
   

@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "page-build": "./copy-down.sh && npm  run build --prefix ./page",
+    "page-dev": "npm  run dev --prefix ./page"
+  }
+}
